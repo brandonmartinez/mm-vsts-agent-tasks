@@ -1,0 +1,55 @@
+{
+	"id": "036d9c6f-485b-4075-b95d-3a4532a85f30",
+	"name": "DnxPublishApplicationArtifacts",
+	"friendlyName": "DNX - Publish Application Artifacts",
+	"description": "Build a DNX web application utilizing the command line and publish build artifacts.",
+	"helpMarkDown": "[More Information](https://github.com/brandonmartinez/mm-vsts-agent-tasks/)",
+	"category": "Build",
+	"visibility": [
+		"Build"
+	],
+	"author": "Brandon Martinez",
+	"version": {
+		"Major": 0,
+		"Minor": 1,
+		"Patch": 21
+	},
+	"demands": [
+		"msbuild"
+	],
+	"minimumAgentVersion": "1.83.0",
+	"inputs": [
+		{
+			"name": "ProjectPath",
+			"type": "filePath",
+			"label": "Project Path",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "Relative path to the folder containing your .xproj DNX web application."
+		},
+		{
+			"name": "BuildConfiguration",
+			"type": "string",
+			"label": "Build Configuration",
+			"defaultValue": "release",
+			"required": true,
+			"helpMarkDown": "The configuration profile used to build the DNX project."
+		},
+		{
+			"name": "ArtifactName",
+			"type": "string",
+			"label": "Artifact Name",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "The name of the published build artifact (will be saved with build)."
+		}
+	],
+	"instanceNameFormat": "DNX - Publish Application Artifacts: $(ProjectPath)",
+	"execution": {
+		"PowerShell": {
+			"target": "$(currentDirectory)\\Publish-DnxApplicationArtifacts.ps1",
+			"argumentFormat": "--ProjectPath $(ProjectPath) --BuildConfiguration $(BuildConfiguration) --ArtifactName $(ArtifactName)",
+            "workingDirectory": "$(currentDirectory)"
+		}
+	}
+}
