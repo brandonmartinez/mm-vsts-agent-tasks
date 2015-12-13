@@ -32,7 +32,7 @@
 	"execution": {
 		"PowerShell": {
 			"target": "$(currentDirectory)\\Install-DnxNugetPackages.ps1",
-			"argumentFormat": "--SolutionRoot $(SolutionRoot)",
+			"argumentFormat": "",
             "workingDirectory": "$(currentDirectory)"
 		}
 	}

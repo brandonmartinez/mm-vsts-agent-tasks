@@ -1,8 +1,8 @@
 {
-	"id": "036d9c6f-485b-4075-b95d-3a4532a85f30",
-	"name": "DnxPublishApplicationArtifacts",
-	"friendlyName": "DNX - Publish Application Artifacts",
-	"description": "Build a DNX web application utilizing the command line and publish build artifacts.",
+	"id": "f6943a4f-ef18-4582-a4a5-1a2bd86929a1",
+	"name": "SqlPublishDatabaseProjectArtifacts",
+	"friendlyName": "SQL - Publish Database Project Artifacts",
+	"description": "Build a SQL Database Project and publish its artifacts, including the generated DACPAC and available publish profiles.",
 	"helpMarkDown": "[More Information](https://github.com/brandonmartinez/mm-vsts-agent-tasks/)",
 	"category": "Build",
 	"visibility": [
@@ -12,7 +12,7 @@
 	"version": {
 		"Major": 0,
 		"Minor": 1,
-		"Patch": 21
+		"Patch": 0
 	},
 	"demands": [
 		"msbuild"
@@ -20,12 +20,12 @@
 	"minimumAgentVersion": "1.83.0",
 	"inputs": [
 		{
-			"name": "ProjectPath",
+			"name": "SqlDatabaseProjectPath",
 			"type": "filePath",
-			"label": "Project Path",
+			"label": "SQL Database Project Path",
 			"defaultValue": "",
 			"required": true,
-			"helpMarkDown": "Relative path to the folder containing your .xproj DNX web application."
+			"helpMarkDown": "Relative path to the .sqlproj file to build and publish."
 		},
 		{
 			"name": "BuildConfiguration",
@@ -33,7 +33,7 @@
 			"label": "Build Configuration",
 			"defaultValue": "release",
 			"required": true,
-			"helpMarkDown": "The configuration profile used to build the DNX project."
+			"helpMarkDown": "The configuration profile used to build the SQL database project."
 		},
 		{
 			"name": "ArtifactName",
@@ -44,10 +44,10 @@
 			"helpMarkDown": "The name of the published build artifact (will be saved with build)."
 		}
 	],
-	"instanceNameFormat": "DNX - Publish Application Artifacts: $(ProjectPath)",
+	"instanceNameFormat": "SQL - Publish Database Artifacts: $(ProjectPath)",
 	"execution": {
 		"PowerShell": {
-			"target": "$(currentDirectory)\\Publish-DnxApplicationArtifacts.ps1",
+			"target": "$(currentDirectory)\\Publish-SqlDatabaseProjectArtifacts.ps1",
 			"argumentFormat": "",
             "workingDirectory": "$(currentDirectory)"
 		}
