@@ -1,0 +1,87 @@
+{
+	"id": "f6943a4f-ef18-4582-a4a5-1a2bd86929a1",
+	"name": "SqlPublishDatabaseProjectToAzure",
+	"friendlyName": "SQL - Publish Database Project to Server",
+	"description": "Publish a Database Project's DACPAC via a publish profile to a SQL Server",
+	"helpMarkDown": "[More Information](https://github.com/brandonmartinez/mm-vsts-agent-tasks/)",
+	"category": "Deploy",
+	"visibility": [
+		"Release"
+	],
+	"author": "Brandon Martinez",
+	"version": {
+		"Major": 0,
+		"Minor": 1,
+		"Patch": 10
+	},
+	"demands": [
+		
+	],
+	"minimumAgentVersion": "1.83.0",
+	"inputs": [
+		{
+			"name": "DatabasePublishProfilePath",
+			"type": "filePath",
+			"label": "Database Publish Profile",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "The path to the SQL publish profile to use for deployment."
+		},
+		{
+			"name": "DatabaseDacpacPath",
+			"type": "filePath",
+			"label": "Database DACPAC",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "The path to the SQL DACPAC to use for deployment."
+		},
+		{
+			"name": "DatabaseServerName",
+			"type": "string",
+			"label": "Database Server Name",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "The fully-qualified domain path to the database server."
+		},
+		{
+			"name": "DatabaseName",
+			"type": "string",
+			"label": "Database Name",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "The name of the database on the SQL server."
+		},
+		{
+			"name": "DatabaseUserName",
+			"type": "string",
+			"label": "Database User Name",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "The username to login to the database server."
+		},
+		{
+			"name": "DatabasePassword",
+			"type": "string",
+			"label": "Database Password",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "The password to login to the database server."
+		},
+		{
+			"name": "AdditionalArguments",
+			"type": "string",
+			"label": "Additional SQL Package Arguments",
+			"defaultValue": "",
+			"required": false,
+			"helpMarkDown": "Additional (optional) arguments to supply sqlpackage.exe during the deployment process."
+		}
+	],
+	"instanceNameFormat": "SQL - Publish Database Project to Server: $(DatabaseName)",
+	"execution": {
+		"PowerShell": {
+			"target": "$(currentDirectory)\\Publish-SqlDatabaseProjectToServer.ps1",
+			"argumentFormat": "",
+            "workingDirectory": "$(currentDirectory)"
+		}
+	}
+}
