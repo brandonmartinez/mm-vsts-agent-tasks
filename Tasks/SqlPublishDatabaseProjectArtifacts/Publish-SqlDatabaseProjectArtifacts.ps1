@@ -11,7 +11,7 @@ param
     $ArtifactName
 )
 
-Write-Host "Entering script Publish-DnxApplicationArtifacts.ps1"
+Write-Host "Entering script Publish-SqlDatabaseProjectArtifacts.ps1"
 
 Write-Verbose "SqlDatabaseProjectPath = $SqlDatabaseProjectPath"
 $SqlDatabaseProjectDirectoryPath = Split-Path $SqlDatabaseProjectPath
@@ -51,4 +51,4 @@ Copy-Item $PublishProfileCopyPattern $artifactStagingFolder -Recurse -Verbose
 Write-Host "Publishing SQL database project artifacts from staging folder to Build Artifact destination $artifactStagingFolder"
 Publish-BuildArtifact $ArtifactName $artifactStagingFolder
 
-Write-Host "Leaving script Publish-DnxApplicationArtifacts.ps1"
+Write-Host "Leaving script Publish-SqlDatabaseProjectArtifacts.ps1"
