@@ -1,5 +1,5 @@
 {
-	"id": "f6943a4f-ef18-4582-a4a5-1a2bd86929a1",
+	"id": "4c5da31c-aff0-43a9-88e2-1afb8916f85a",
 	"name": "SqlPublishDatabaseProjectArtifacts",
 	"friendlyName": "SQL - Publish Database Project Artifacts",
 	"description": "Build a SQL Database Project and publish its artifacts, including the generated DACPAC and available publish profiles.",
