@@ -1,0 +1,83 @@
+{
+	"id": "f04aeb2f-486e-4355-b12c-93c72a6a1c61",
+	"name": "DnxPublishWebJobToAzure",
+	"friendlyName": "DNX - Publish Web Job to Azure",
+	"description": "Publish a DNX console application as a web job in Azure.",
+	"helpMarkDown": "[More Information](https://github.com/brandonmartinez/mm-vsts-agent-tasks/)",
+	"category": "Deploy",
+	"visibility": [
+		"Release"
+	],
+	"author": "Brandon Martinez",
+	"version": {
+		"Major": 0,
+		"Minor": 1,
+		"Patch": 0
+	},
+	"demands": [
+		
+	],
+	"minimumAgentVersion": "1.90.0",
+	"inputs": [
+        {
+            "name": "ConnectedServiceName",
+            "type": "connectedService:Azure",
+            "label": "Azure Subscription",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Azure subscription to configure."
+        },
+		{
+			"name": "AzureWebJobPath",
+			"type": "filePath",
+			"label": "Web Job Artifact Path",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "Relative path to the folder containing your web job executable root."
+		},
+		{
+			"name": "AzureWebJobName",
+			"type": "string",
+			"label": "Web Job Name",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "The name of the web job to deploy."
+		},
+		{
+			"name": "AzureWebJobType",
+			"type": "pickList",
+			"label": "Web Job Type",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "The type of web job to deploy.",
+			"options": {
+				"continuous": "Continuous",
+				"triggered": "On-Demand/Scheduled"
+			}
+		},
+		{
+			"name": "AzureTargetWebApps",
+			"type": "multiLine",
+			"label": "Azure Target Web App(s)",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "The Azure web apps to deploy web job. Put additional web apps on separate lines."
+		},
+		{
+			"name": "AzureTargetWebAppSlotName",
+			"type": "string",
+			"label": "Azure Target Web App Slot Name",
+			"defaultValue": "",
+			"required": false,
+			"helpMarkDown": "The slot to deploy the web job to."
+		}
+	],
+	"instanceNameFormat": "DNX - Publish Web Job to Azure: $(AzureWebJobName)",
+	"execution": {
+		"AzurePowerShell": {
+			"target": "$(currentDirectory)\\Publish-DnxWebJobToAzure.ps1",
+			"argumentFormat": "",
+            "workingDirectory": "$(currentDirectory)"
+		}
+	}
+}
