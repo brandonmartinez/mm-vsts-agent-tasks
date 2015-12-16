@@ -1,0 +1,71 @@
+{
+	"id": "950848ca-91ee-4b32-986f-e9dd1ec3ef12",
+	"name": "DnxPublishApplicationToAzure",
+	"friendlyName": "DNX - Publish Application to Azure",
+	"description": "Publish a DNX application to Azure.",
+	"helpMarkDown": "[More Information](https://github.com/brandonmartinez/mm-vsts-agent-tasks/)",
+	"category": "Deploy",
+	"visibility": [
+		"Release"
+	],
+	"author": "Brandon Martinez",
+	"version": {
+		"Major": 0,
+		"Minor": 1,
+		"Patch": 0
+	},
+	"demands": [
+		
+	],
+	"minimumAgentVersion": "1.90.0",
+	"inputs": [
+        {
+            "name": "ConnectedServiceName",
+            "type": "connectedService:Azure",
+            "label": "Azure Subscription",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Azure subscription to configure."
+        },
+		{
+			"name": "AzureApplicationPath",
+			"type": "filePath",
+			"label": "Application Artifact Path",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "Relative path to the folder containing your web job executable root."
+		},
+		{
+			"name": "AzureTargetWebApps",
+			"type": "multiLine",
+			"label": "Azure Target Web App(s)",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "The Azure web apps to deploy web job. Put additional web apps on separate lines."
+		},
+		{
+			"name": "AzureTargetWebAppSlotName",
+			"type": "string",
+			"label": "Azure Target Web App Slot Name",
+			"defaultValue": "",
+			"required": false,
+			"helpMarkDown": "The slot to deploy the web job to."
+		},
+        {
+            "name": "AzureWebAppForceStop",
+            "type": "boolean",
+            "label": "Stop Web App for Deployment",
+            "defaultValue": false,
+            "required": true,
+            "helpMarkDown": "If true, stop the application during deployment. If false, restarts the instance before deployment instead of stopping completely."
+        }
+	],
+	"instanceNameFormat": "DNX - Publish Application to Azure: $(AzureApplicationPath)",
+	"execution": {
+		"AzurePowerShell": {
+			"target": "$(currentDirectory)\\Publish-DnxApplicationToAzure.ps1",
+			"argumentFormat": "",
+            "workingDirectory": "$(currentDirectory)"
+		}
+	}
+}
