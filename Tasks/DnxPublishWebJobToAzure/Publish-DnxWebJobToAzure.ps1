@@ -69,7 +69,7 @@ $AzureTargetWebAppList | % {
     
     # MSDeploy variables to use in arguments below
     $msdeployIisAppPath = $webapp.Name
-    $msdeployIisSubAppPath = "$msdeployIisAppPath/app_data/jobs/$AzureWebJobType/$AzureWebJobName"
+    $msdeployIisSubAppPath = "$msdeployIisAppPath\app_data\jobs\$AzureWebJobType\$AzureWebJobName"
     # The following is Azure specific; your mileage may vary
     $msdeployComputerName = "https://$msdeployurl/msdeploy.axd"
     $msdeployUserName = $webapp.PublishingUsername
@@ -104,6 +104,9 @@ $AzureTargetWebAppList | % {
         cmd.exe /c "`"$command`""
     }
     $ErrorActionPreference = 'Stop'
+    
+    Write-Verbose "Restarting $webappName"
+    Restart-AzureWebsite -Name $webappName
 
     Write-Verbose "Finished publish of $AzureWebJobType web job $AzureWebJobName to $webappName"
 }
