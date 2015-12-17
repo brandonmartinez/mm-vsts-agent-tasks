@@ -17,7 +17,10 @@ param
     $AzureTargetWebApps,
 
     [String]
-    $AzureTargetWebAppSlotName
+    $AzureTargetWebAppSlotName,
+    
+    [String]
+    $AzureRestartWebAppAfterDeploy
 )
 
 Write-Host "Entering script Publish-DnxWebJobToAzure.ps1"
@@ -27,6 +30,9 @@ Write-Verbose "AzureWebJobName = $AzureWebJobName"
 Write-Verbose "AzureWebJobType = $AzureWebJobType"
 Write-Verbose "AzureTargetWebApps = $AzureTargetWebApps"
 Write-Verbose "AzureTargetWebAppSlotName = $AzureTargetWebAppSlotName"
+Write-Verbose "AzureRestartWebAppAfterDeploy = $AzureRestartWebAppAfterDeploy"
+
+Convert-String $AzureRestartWebAppAfterDeploy Boolean
 
 $msdeployRegKey = "hklm:\SOFTWARE\Microsoft\IIS Extensions\MSDeploy"
 if(-not (Test-Path -Path $msdeployRegKey))
@@ -105,8 +111,10 @@ $AzureTargetWebAppList | % {
     }
     $ErrorActionPreference = 'Stop'
     
-    Write-Verbose "Restarting $webappName"
-    Restart-AzureWebsite -Name $webappName
+    if($AzureRestartWebAppAfterDeploy) {
+        Write-Verbose "Restarting $webappName"
+        Restart-AzureWebsite -Name $webappName
+    }
 
     Write-Verbose "Finished publish of $AzureWebJobType web job $AzureWebJobName to $webappName"
 }

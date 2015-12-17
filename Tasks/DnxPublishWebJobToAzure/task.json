@@ -11,7 +11,7 @@
 	"author": "Brandon Martinez",
 	"version": {
 		"Major": 0,
-		"Minor": 1,
+		"Minor": 2,
 		"Patch": 0
 	},
 	"demands": [
@@ -70,7 +70,15 @@
 			"defaultValue": "",
 			"required": false,
 			"helpMarkDown": "The slot to deploy the web job to."
-		}
+		},
+        {
+            "name": "AzureRestartWebAppAfterDeploy",
+            "type": "boolean",
+            "label": "Restart Web App After Deployment",
+            "defaultValue": false,
+            "required": true,
+            "helpMarkDown": "If true, restarts the web app after deployment."
+        }
 	],
 	"instanceNameFormat": "DNX - Publish Web Job to Azure: $(AzureWebJobName)",
 	"execution": {
