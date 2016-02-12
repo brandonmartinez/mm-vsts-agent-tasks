@@ -1,0 +1,47 @@
+{
+	"id": "fc8d41a6-5d1d-45c6-92b2-962f8650a43b",
+	"name": "WordPressPublishArtifacts",
+	"friendlyName": "WordPress - Publish Artifacts",
+	"description": "Copies and registers WordPress artifacts in an IIS and Azure-friendly structure.",
+	"helpMarkDown": "[More Information](https://github.com/brandonmartinez/mm-vsts-agent-tasks/)",
+	"category": "Build",
+	"visibility": [
+		"Build"
+	],
+	"author": "Brandon Martinez",
+	"version": {
+		"Major": 0,
+		"Minor": 1,
+		"Patch": 0
+	},
+	"demands": [
+		
+	],
+	"minimumAgentVersion": "1.83.0",
+	"inputs": [
+		{
+			"name": "WordPressRoot",
+			"type": "filePath",
+			"label": "WordPress Path",
+			"defaultValue": "",
+			"required": false,
+			"helpMarkDown": "Relative path to the folder containing your WordPress root. Leave blank to use the root of your git repository."
+		},
+		{
+			"name": "ArtifactName",
+			"type": "string",
+			"label": "Artifact Name",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "The name of the published build artifact (will be saved with build)."
+		}
+	],
+	"instanceNameFormat": "WordPress - Publish Artifacts",
+	"execution": {
+		"PowerShell": {
+			"target": "$(currentDirectory)\\Publish-WordPressArtifacts.ps1",
+			"argumentFormat": "",
+            "workingDirectory": "$(currentDirectory)"
+		}
+	}
+}
