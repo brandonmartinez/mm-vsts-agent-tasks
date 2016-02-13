@@ -32,6 +32,7 @@ $AzureTargetWebAppList | % {
     
     Write-Verbose "Azure Web App Targeted: $webappName"
   
+    # TODO Do slot check here
     if($AzureWebAppForceStop) {
         Write-Verbose "Force Stop Requested. Stopping Azure Website $webappName to ensure no locks"
         Stop-AzureWebsite -Name $webappName

@@ -11,7 +11,7 @@
 	"author": "Brandon Martinez",
 	"version": {
 		"Major": 0,
-		"Minor": 2,
+		"Minor": 4,
 		"Patch": 0
 	},
 	"demands": [
@@ -72,12 +72,12 @@
 			"helpMarkDown": "The slot to deploy the web job to."
 		},
         {
-            "name": "AzureRestartWebAppAfterDeploy",
+            "name": "AzureWebAppForceStop",
             "type": "boolean",
-            "label": "Restart Web App After Deployment",
+            "label": "Force Stop Web App Before Deployment",
             "defaultValue": false,
             "required": true,
-            "helpMarkDown": "If true, restarts the web app after deployment."
+            "helpMarkDown": "Force stop the web app before deploying the web job."
         }
 	],
 	"instanceNameFormat": "DNX - Publish Web Job to Azure: $(AzureWebJobName)",
