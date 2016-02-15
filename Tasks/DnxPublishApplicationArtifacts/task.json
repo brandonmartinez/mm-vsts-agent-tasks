@@ -11,8 +11,8 @@
 	"author": "Brandon Martinez",
 	"version": {
 		"Major": 0,
-		"Minor": 1,
-		"Patch": 21
+		"Minor": 2,
+		"Patch": 1
 	},
 	"demands": [
 		"msbuild"
@@ -35,6 +35,14 @@
 			"required": true,
 			"helpMarkDown": "The configuration profile used to build the DNX project."
 		},
+        {
+            "name": "CollectOnlyApproot",
+            "type": "boolean",
+            "label": "Collect Only Approot",
+            "defaultValue": false,
+            "required": false,
+            "helpMarkDown": "For non-web applications, only collect the approot folder (structured like a traditional .NET application)."
+        },
 		{
 			"name": "ArtifactName",
 			"type": "string",
