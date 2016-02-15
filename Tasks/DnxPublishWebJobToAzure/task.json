@@ -12,7 +12,7 @@
 	"version": {
 		"Major": 0,
 		"Minor": 4,
-		"Patch": 0
+		"Patch": 1
 	},
 	"demands": [
 		
@@ -76,7 +76,7 @@
             "type": "boolean",
             "label": "Force Stop Web App Before Deployment",
             "defaultValue": false,
-            "required": true,
+            "required": false,
             "helpMarkDown": "Force stop the web app before deploying the web job."
         }
 	],
