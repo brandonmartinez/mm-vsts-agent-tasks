@@ -19,14 +19,15 @@ Write-Host "Entering script Publish-DnxApplicationArtifacts.ps1"
 $SolutionRoot = $env:BUILD_SOURCESDIRECTORY
 $GlobalJsonPath = Join-Path $SolutionRoot "global.json"
 
-Write-Verbose "SolutionRoot = $SolutionRoot"
-Write-Verbose "GlobalJsonPath = $GlobalJsonPath"
-Write-Verbose "ProjectPath = $ProjectPath"
-Write-Verbose "BuildConfiguration = $BuildConfiguration"
-Write-Verbose "ArtifactName = $ArtifactName"
-Write-Verbose "CollectOnlyApproot = $CollectOnlyApproot"
+Write-Host "SolutionRoot = $SolutionRoot"
+Write-Host "GlobalJsonPath = $GlobalJsonPath"
+Write-Host "ProjectPath = $ProjectPath"
+Write-Host "BuildConfiguration = $BuildConfiguration"
+Write-Host "ArtifactName = $ArtifactName"
+Write-Host "CollectOnlyApproot = $CollectOnlyApproot"
 
-Convert-String $CollectOnlyApproot Boolean
+$CollectOnlyApprootChecked = Convert-String $CollectOnlyApproot Boolean
+Write-Host "CollectOnlyApprootChecked = $CollectOnlyApprootChecked"
 
 $globalJson = Get-Content -Path $GlobalJsonPath -Raw -ErrorAction Ignore | ConvertFrom-Json -ErrorAction Ignore
 $dnxVersion = if($globalJson) { $globalJson.sdk.version } else { throw("Global.json doesn't specify DNX runtime version.") }
@@ -58,11 +59,14 @@ Write-Host "Publishing DNX project to $artifactStagingFolder"
 # TODO: give option of --no-source or not
 & "dnu" "publish" $ProjectPath "--configuration" $BuildConfiguration "--out" $artifactStagingFolder "--runtime" $dnxRuntimePath "--no-source"
 
-if($CollectOnlyApproot) {
-    $artifactStagingFolder = Join-Path $artifactStagingFolder "approot"
+if($CollectOnlyApprootChecked) {
+    $appRootFolder = Join-Path $artifactStagingFolder "approot"
+    
+    Write-Host "Publishing DNX project artifact from staging folder to Build Artifact destination $appRootFolder"
+    Publish-BuildArtifact $ArtifactName $appRootFolder
+} else {
+    Write-Host "Publishing DNX project artifact from staging folder to Build Artifact destination $artifactStagingFolder"
+    Publish-BuildArtifact $ArtifactName $artifactStagingFolder
 }
-
-Write-Host "Publishing DNX project artifact from staging folder to Build Artifact destination $artifactStagingFolder"
-Publish-BuildArtifact $ArtifactName $artifactStagingFolder
 
 Write-Host "Leaving script Publish-DnxApplicationArtifacts.ps1"

@@ -32,7 +32,8 @@ Write-Verbose "AzureTargetWebApps = $AzureTargetWebApps"
 Write-Verbose "AzureTargetWebAppSlotName = $AzureTargetWebAppSlotName"
 Write-Verbose "AzureWebAppForceStop = $AzureWebAppForceStop"
 
-Convert-String $AzureWebAppForceStop Boolean
+$AzureWebAppForceStopChecked = Convert-String $AzureWebAppForceStop Boolean
+Write-Verbose "AzureWebAppForceStopChecked = $AzureWebAppForceStopChecked"
 
 $msdeployRegKey = "hklm:\SOFTWARE\Microsoft\IIS Extensions\MSDeploy"
 if(-not (Test-Path -Path $msdeployRegKey))
@@ -57,7 +58,7 @@ $AzureTargetWebAppList | % {
     Write-Verbose "Azure Web App Targeted: $webappName"
     
     # TODO Do slot check here
-    if($AzureWebAppForceStop) {
+    if($AzureWebAppForceStopChecked) {
         Write-Verbose "Force Stop Requested. Stopping Azure Website $webappName to ensure no locks"
         Stop-AzureWebsite -Name $webappName
     } else {
@@ -128,7 +129,7 @@ $AzureTargetWebAppList | % {
         throw
     }
     finally {
-        if($AzureWebAppForceStop) {
+        if($AzureWebAppForceStopChecked) {
             Write-Verbose "Force Stop Previously Requested. Starting Azure Website $webappName"
             Start-AzureWebsite -Name $webappName
         }
