@@ -11,8 +11,8 @@
 	"author": "Brandon Martinez",
 	"version": {
 		"Major": 0,
-		"Minor": 1,
-		"Patch": 10
+		"Minor": 2,
+		"Patch": 1
 	},
 	"demands": [
 		
@@ -66,6 +66,14 @@
 			"defaultValue": "",
 			"required": true,
 			"helpMarkDown": "The password to login to the database server."
+		},
+		{
+			"name": "SqlCommandTimeout",
+			"type": "string",
+			"label": "SQL Command Timeout",
+			"defaultValue": "300",
+			"required": true,
+			"helpMarkDown": "The timeout in seconds to use for SQL commands; default is 300 seconds (5 minutes)."
 		},
 		{
 			"name": "AdditionalArguments",

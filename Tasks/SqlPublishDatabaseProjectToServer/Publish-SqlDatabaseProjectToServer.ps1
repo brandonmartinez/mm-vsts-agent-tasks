@@ -18,6 +18,9 @@ param
 
     [String] [Parameter(Mandatory = $true)]
     $DatabasePassword,
+    
+    [String] [Parameter(Mandatory = $true)]
+    $SqlCommandTimeout,
 
     [String]
     $AdditionalArguments
@@ -31,7 +34,16 @@ Write-Verbose "DatabaseServerName = $DatabaseServerName"
 Write-Verbose "DatabaseName = $DatabaseName"
 Write-Verbose "DatabaseUserName = $DatabaseUserName"
 Write-Verbose "DatabasePassword = $DatabasePassword"
+Write-Verbose "SqlCommandTimeout = $SqlCommandTimeout"
 Write-Verbose "AdditionalArguments = $AdditionalArguments"
+
+# Santiize an empty AdditionalArguments value
+if([string]::IsNullOrWhiteSpace($AdditionalArguments)) {
+    $AdditionalArguments = ""
+}
+
+# Adding known arguments. For more information visit https://msdn.microsoft.com/en-us/hh550080(v=vs.103).aspx
+$AdditionalArguments += " /p:CommandTimeout=$SqlCommandTimeout"
 
 # Import the Task.Common and Task.Internal dll that has all the cmdlets we need for Build
 $agentWorkerModulesPath = "$($env:AGENT_HOMEDIRECTORY)\agent\worker\Modules"
