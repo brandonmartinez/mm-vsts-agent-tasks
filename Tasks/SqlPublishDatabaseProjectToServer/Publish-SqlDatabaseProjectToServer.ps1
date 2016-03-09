@@ -79,11 +79,13 @@ Invoke-Expression -Command $SqlPackageCommand
 $ErrorActionPreference = 'Stop'
 #>
 
-Write-Verbose "Executing SQLPackage.exe"  -Verbose
 $sqlPackage = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\SqlPackage.exe"
 $sqlPackageArguments = $scriptArgument.Trim('"', ' ')
 $command = "`"$sqlPackage`" $sqlPackageArguments"
 $command = $command.Replace("'", "`"")
+
+Write-Verbose "Executing SQLPackage.exe with command $command"
+
 $PowershellVersion5 = "5"
 $ErrorActionPreference = 'Continue'
 if ($PSVersionTable.PSVersion.Major -ge $PowershellVersion5) {
