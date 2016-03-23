@@ -12,7 +12,7 @@
 	"version": {
 		"Major": 0,
 		"Minor": 4,
-		"Patch": 2
+		"Patch": 3
 	},
 	"demands": [
 		
@@ -61,7 +61,7 @@
 			"label": "Azure Target Web App(s)",
 			"defaultValue": "",
 			"required": true,
-			"helpMarkDown": "The Azure web apps to deploy web job. Put additional web apps on separate lines."
+			"helpMarkDown": "The Azure web apps to deploy web job. Put additional web apps on separate lines or separate them with a comma or semicolon."
 		},
 		{
 			"name": "AzureTargetWebAppSlotName",

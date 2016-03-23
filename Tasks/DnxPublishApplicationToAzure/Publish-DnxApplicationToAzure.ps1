@@ -26,7 +26,7 @@ Write-Verbose "AzureWebAppForceStop = $AzureWebAppForceStop"
 $AzureWebAppForceStopChecked = Convert-String $AzureWebAppForceStop Boolean
 Write-Verbose "AzureWebAppForceStopChecked = $AzureWebAppForceStopChecked"
 
-$AzureTargetWebAppList = $AzureTargetWebApps.split("`r`n") | Where {-not [string]::IsNullOrWhiteSpace($_)}
+$AzureTargetWebAppList = $AzureTargetWebApps.split("`r`n").split(",").split(";") | Where {-not [string]::IsNullOrWhiteSpace($_)}
 
 $AzureTargetWebAppList | % {
     $webappName = $_
