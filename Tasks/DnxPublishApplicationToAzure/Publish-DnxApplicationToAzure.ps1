@@ -33,13 +33,20 @@ $AzureTargetWebAppList | % {
     
     Write-Verbose "Azure Web App Targeted: $webappName"
   
-    # TODO Do slot check here
     if($AzureWebAppForceStopChecked) {
         Write-Verbose "Force Stop Requested. Stopping Azure Website $webappName to ensure no locks"
-        Stop-AzureWebsite -Name $webappName
+        if ([string]::IsNullOrWhiteSpace($AzureTargetWebAppSlotName)) {
+            Stop-AzureWebsite -Name $webappName
+        } else {
+            Stop-AzureWebsite -Name $webappName -Slot $AzureTargetWebAppSlotName
+        }
     } else {
         Write-Verbose "Restarting Azure Website $webappName to ensure no locks"
-        Restart-AzureWebsite -Name $webappName
+        if ([string]::IsNullOrWhiteSpace($AzureTargetWebAppSlotName)) {
+            Restart-AzureWebsite -Name $webappName
+        } else {
+            Restart-AzureWebsite -Name $webappName -Slot $AzureTargetWebAppSlotName
+        }
     }
     
     try {
@@ -99,7 +106,11 @@ $AzureTargetWebAppList | % {
     finally {
         if($AzureWebAppForceStopChecked) {
             Write-Verbose "Force Stop Previously Requested. Starting Azure Website $webappName"
-            Start-AzureWebsite -Name $webappName
+            if ([string]::IsNullOrWhiteSpace($AzureTargetWebAppSlotName)) {
+                Start-AzureWebsite -Name $webappName
+            } else {
+                Start-AzureWebsite -Name $webappName -Slot $AzureTargetWebAppSlotName
+            }
         }
     }
 }
