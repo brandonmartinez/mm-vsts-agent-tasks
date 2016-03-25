@@ -136,9 +136,11 @@ $AzureTargetWebAppList | % {
         throw
     }
     finally {
-        if($AzureWebAppForceStopChecked) {
-            Write-Verbose "Force Stop Previously Requested. Starting Azure Website $webappName"
+        Write-Verbose "Force Stop Previously Requested. Starting Azure Website $webappName"
+        if ([string]::IsNullOrWhiteSpace($AzureTargetWebAppSlotName)) {
             Start-AzureWebsite -Name $webappName
+        } else {
+            Start-AzureWebsite -Name $webappName -Slot $AzureTargetWebAppSlotName
         }
     }
 
