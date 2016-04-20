@@ -30,8 +30,10 @@ $CollectOnlyApprootChecked = Convert-String $CollectOnlyApproot Boolean
 Write-Host "CollectOnlyApprootChecked = $CollectOnlyApprootChecked"
 
 $globalJson = Get-Content -Path $GlobalJsonPath -Raw -ErrorAction Ignore | ConvertFrom-Json -ErrorAction Ignore
-$dnxVersion = if($globalJson) { $globalJson.sdk.version } else { throw("Global.json doesn't specify DNX runtime version.") }
-$dnxRuntimePath = "$($env:USERPROFILE)\.dnx\runtimes\dnx-clr-win-x86.$dnxVersion"
+$dnxVersion = if($globalJson -and $globalJson.sdk -and $globalJson.sdk.version) { $globalJson.sdk.version } else { throw("Global.json doesn't specify DNX runtime version.") }
+$dnxArchitecture = if($globalJson -and $globalJson.sdk -and $globalJson.sdk.architecture) { $globalJson.sdk.architecture } else { "x86" }
+$dnxRuntime = if($globalJson -and $globalJson.sdk -and $globalJson.sdk.runtime) { $globalJson.sdk.runtime } else { "clr" }
+$dnxRuntimePath = "$($env:USERPROFILE)\.dnx\runtimes\dnx-$dnxRuntime-win-$dnxArchitecture.$dnxVersion"
 
 Write-Verbose "DNX Runtime Path = $dnxRuntimePath"
 
