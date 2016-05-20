@@ -47,12 +47,6 @@ Import-Module $agentDistributedTaskInternalModulePath
 Write-Verbose "Importing VSTS Module $agentDistributedTaskCommonModulePath"
 Import-Module $agentDistributedTaskCommonModulePath
 
-Write-Host "Restoring DNX project $ProjectPath references"
-& "dnu" "restore" "$ProjectPath\project.json" "--fallbacksource" "https://www.myget.org/F/aspnetmaster/api/v2" "2>1"
-    
-Write-Host "Building DNX project $ProjectPath"
-& "dnu" "build" "$ProjectPath"  "--configuration" "$BuildConfiguration" "2>1"
-
 $stagingFolder = Get-TaskVariable $distributedTaskContext "build.artifactstagingdirectory"
 $artifactStagingFolder = "$stagingFolder\$ArtifactName"
 
