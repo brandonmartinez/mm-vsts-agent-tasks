@@ -89,7 +89,8 @@ $AzureTargetWebAppList | % {
         $publishProperties.Add('Username', $webapp.PublishingUsername)
         $publishProperties.Add('Password', $webapp.PublishingPassword)
         
-        $publishScript = "${env:ProgramFiles(x86)}\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\Web Tools\Publish\Scripts\default-publish.ps1"
+        #$publishScript = "${env:ProgramFiles(x86)}\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\Web Tools\Publish\Scripts\default-publish.ps1"
+        $publishScript = "$PSScriptRoot\default-publish.ps1"
             
         Write-Verbose "Running publish script $publishScript"
         
