@@ -1,9 +1,9 @@
 {
-	"id": "950848ca-91ee-4b32-986f-e9dd1ec3ef12",
-	"name": "DnxPublishApplicationToAzure",
-	"friendlyName": "DNX - Publish Application to Azure",
-	"description": "Publish a DNX application to Azure.",
-	"helpMarkDown": "[More Information](https://github.com/brandonmartinez/mm-vsts-agent-tasks/)",
+	"id": "3062f372-3cd9-493d-9eaa-7e726fc0d728",
+	"name": "PublishAspNetCoreWebAppToAzure",
+	"friendlyName": "ASP.NET Core - Publish to Azure",
+	"description": "Publish ASP.NET Core Application to Azure.",
+	"helpMarkDown": "",
 	"category": "Deploy",
 	"visibility": [
 		"Release"
@@ -12,12 +12,12 @@
 	"version": {
 		"Major": 1,
 		"Minor": 0,
-		"Patch": 0
+		"Patch": 1
 	},
-	"demands": [
-		
-	],
-	"minimumAgentVersion": "1.90.0",
+    "demands": [
+        "DotNetFramework"
+    ],
+    "minimumAgentVersion": "1.102",
 	"inputs": [
         {
             "name": "ConnectedServiceName",
@@ -33,7 +33,7 @@
 			"label": "Application Artifact Path",
 			"defaultValue": "",
 			"required": true,
-			"helpMarkDown": "Relative path to the folder containing your web job executable root."
+			"helpMarkDown": "Relative path to the folder containing your web app root."
 		},
 		{
 			"name": "AzureTargetWebApps",
@@ -60,10 +60,10 @@
             "helpMarkDown": "If true, stop the application during deployment. If false, restarts the instance before deployment instead of stopping completely."
         }
 	],
-	"instanceNameFormat": "DNX - Publish Application to Azure: $(AzureApplicationPath)",
+	"instanceNameFormat": "ASP.NET Core - Publish to Azure: $(AzureTargetWebApps)",
 	"execution": {
 		"AzurePowerShell": {
-			"target": "$(currentDirectory)\\Publish-DnxApplicationToAzure.ps1",
+			"target": "$(currentDirectory)\\Publish-AspNetCoreWebAppToAzure.ps1",
 			"argumentFormat": "",
             "workingDirectory": "$(currentDirectory)"
 		}

@@ -1,0 +1,47 @@
+{
+	"id": "3bdb4c56-e44a-45c4-86f7-22e8a1f6a27c",
+    "name": "BuildAspNetCoreWebApp",
+    "friendlyName": "ASP.NET Core - Build",
+    "description": "Build an ASP.NET Core Application",
+    "helpMarkDown": "",
+    "category": "Build",
+    "visibility": [
+        "Build"
+    ],
+	"author": "Brandon Martinez",
+	"version": {
+		"Major": 1,
+		"Minor": 0,
+		"Patch": 1
+	},
+	"demands": [
+		"DotNetFramework"
+	],
+	"minimumAgentVersion": "1.102",
+	"inputs": [
+		{
+			"name": "ProjectName",
+			"type": "string",
+			"label": "Project Name",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "The name of the ASP.NET Core Project (without .xproj)"
+		},
+        {
+			"name": "BuildConfiguration",
+			"type": "string",
+			"label": "Build Configuration",
+			"defaultValue": "$(BuildConfiguration)",
+			"required": true,
+			"helpMarkDown": "The configuration to use when building the app."
+		}
+	],
+	"instanceNameFormat": "ASP.NET Core - Build Application: $(ProjectName)",
+	"execution": {
+		"PowerShell": {
+			"target": "$(currentDirectory)\\Build-AspNetCoreWebApp.ps1",
+			"argumentFormat": "",
+            "workingDirectory": "$(currentDirectory)"
+		}
+	}
+}

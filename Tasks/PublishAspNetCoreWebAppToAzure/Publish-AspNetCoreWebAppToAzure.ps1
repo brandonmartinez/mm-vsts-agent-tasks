@@ -14,16 +14,16 @@ param
     $AzureTargetWebAppSlotName,
     
     [String]
-    $AzureWebAppForceStop
+    $AzureWebAppForceStop = "0"
 )
 
-Write-Host "Entering script Publish-DnxApplicationToAzure.ps1"
-Write-Verbose "AzureWebJobPath = $AzureWebJobPath"
+Write-Host "Entering script Publish-AspNetCoreWebAppToAzure.ps1"
+Write-Verbose "AzureApplicationPath = $AzureApplicationPath"
 Write-Verbose "AzureTargetWebApps = $AzureTargetWebApps"
 Write-Verbose "AzureTargetWebAppSlotName = $AzureTargetWebAppSlotName"
 Write-Verbose "AzureWebAppForceStop = $AzureWebAppForceStop"
 
-$AzureWebAppForceStopChecked = Convert-String $AzureWebAppForceStop Boolean
+$AzureWebAppForceStopChecked = $AzureWebAppForceStop -eq "1" -or $AzureWebAppForceStop -eq "true"
 Write-Verbose "AzureWebAppForceStopChecked = $AzureWebAppForceStopChecked"
 
 $AzureTargetWebAppList = $AzureTargetWebApps.split("`r`n").split(",").split(";") | Where {-not [string]::IsNullOrWhiteSpace($_)}
@@ -59,6 +59,7 @@ $AzureTargetWebAppList | % {
         }
         
         # Grab SCM url to use with MSDeploy; there should only be one
+        Write-Host ($webapp.EnabledHostNames | Format-List | Out-String)
         $msdeployurl = $webapp.EnabledHostNames | Where-Object {$_ -like "*.scm.*"}
         
         if($msdeployurl -is [System.Object[]]) {
@@ -68,29 +69,25 @@ $AzureTargetWebAppList | % {
         $msdeployIisAppPath = $webapp.Name
         
         # For additional options, check here: https://github.com/sayedihashimi/publish-module/blob/master/publish-module.psm1
-        $publishProperties = @{
-            'WebPublishMethod'='MSDeploy'; `
-            'MSDeployServiceUrl'=$msdeployurl; `
-            'DeployIisAppPath'=$msdeployIisAppPath; `
-            'EnableMSDeployAppOffline'=$true; `
-            'MSDeployUseChecksum'=$true; `
+        $publishProperties = @{ `
+            "WebPublishMethod" = "MSDeploy"; `
+            #"ADUsesOwinOrOpenIdConnect" = $false;
+            "PublishProvider" = "AzureWebSite"; `
+            "LaunchSiteAfterPublish" = $false; `
+            "UsePowerShell" = $true; `
+            "MSDeployServiceUrl" = "$($msdeployurl):443"; `
+            "DeployIisAppPath" = $msdeployIisAppPath; `
+            #"SkipExtraFilesOnServer" = $false;
+            "MSDeployPublishMethod" = "WMSVC"; `
         }
-        
-        <#
-        TODO: add ability to clear deployment
-        if($clearDeployment -eq $true) {
-            $publishProperties.Add('SkipExtraFilesOnServer', $false)
-        }
-        #>
-    
+
         Write-Verbose "Using the following publish properties (excluding username and password):"            
         Write-Verbose ($publishProperties | Format-List | Out-String)
         
         $publishProperties.Add('Username', $webapp.PublishingUsername)
         $publishProperties.Add('Password', $webapp.PublishingPassword)
         
-        #$publishScript = "${env:ProgramFiles(x86)}\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\Web Tools\Publish\Scripts\default-publish.ps1"
-        $publishScript = "$PSScriptRoot\default-publish.ps1"
+        $publishScript = "${env:ProgramFiles(x86)}\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\Web Tools\Publish\Scripts\1.1.0\default-publish.ps1"
             
         Write-Verbose "Running publish script $publishScript"
         
@@ -117,4 +114,4 @@ $AzureTargetWebAppList | % {
 }
 
 
-Write-Host "Leaving script Publish-DnxApplicationToAzure.ps1"
+Write-Host "Leaving script Publish-AspNetCoreWebAppToAzure.ps1"
