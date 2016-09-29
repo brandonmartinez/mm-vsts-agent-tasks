@@ -12,7 +12,10 @@ $GlobalJsonPath = Join-Path $SolutionRoot "global.json"
 Write-Verbose "SolutionRoot = $SolutionRoot"
 Write-Verbose "GlobalJsonPath = $GlobalJsonPath"
 
-&{$Branch='dev';iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/brandonmartinez/Aspnet-Home/dev/dnvminstall.ps1'))}
+$runtimeInstallUrl = 'https://raw.githubusercontent.com/brandonmartinez/Aspnet-Home/dev/dnvminstall.ps1'
+Write-Verbose $runtimeInstallUrl 
+
+&{$Branch='dev';iex ((new-object net.webclient).DownloadString($runtimeInstallUrl))}
 $globalJson = Get-Content -Path $GlobalJsonPath -Raw -ErrorAction Ignore | ConvertFrom-Json -ErrorAction Ignore
 $dnxVersion = if($globalJson -and $globalJson.sdk -and $globalJson.sdk.version) { $globalJson.sdk.version } else { throw("Global.json doesn't specify DNX runtime version.") }
 $dnxArchitecture = if($globalJson -and $globalJson.sdk -and $globalJson.sdk.architecture) { $globalJson.sdk.architecture } else { "x86" }
