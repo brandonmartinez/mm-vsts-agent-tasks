@@ -46,11 +46,10 @@ if([string]::IsNullOrWhiteSpace($AdditionalArguments)) {
 $AdditionalArguments += " /p:CommandTimeout=$SqlCommandTimeout"
 
 # Import the Task.Common and Task.Internal dll that has all the cmdlets we need for Build
-$agentWorkerModulesPath = "$($env:AGENT_HOMEDIRECTORY)\agent\worker\Modules"
-$agentDistributedTaskInternalModulePath = "$agentWorkerModulesPath\Microsoft.TeamFoundation.DistributedTask.Task.Internal\Microsoft.TeamFoundation.DistributedTask.Task.Internal.dll"
-$agentDistributedTaskCommonModulePath = "$agentWorkerModulesPath\Microsoft.TeamFoundation.DistributedTask.Task.Common\Microsoft.TeamFoundation.DistributedTask.Task.Common.dll"
-$agentDistributedTaskDevTestLabs = "$agentWorkerModulesPath\Microsoft.TeamFoundation.DistributedTask.Task.DevTestLabs\Microsoft.TeamFoundation.DistributedTask.Task.DevTestLabs.dll"
-$agentDistributedTaskDeploymentInternal = "$agentWorkerModulesPath\Microsoft.TeamFoundation.DistributedTask.Task.Deployment.Internal\Microsoft.TeamFoundation.DistributedTask.Task.Deployment.Internal.psm1"
+$agentDistributedTaskInternalModulePath = "Microsoft.TeamFoundation.DistributedTask.Task.Internal"
+$agentDistributedTaskCommonModulePath = "Microsoft.TeamFoundation.DistributedTask.Task.Common"
+$agentDistributedTaskDevTestLabs = "Microsoft.TeamFoundation.DistributedTask.Task.DevTestLabs"
+$agentDistributedTaskDeploymentInternal = "Microsoft.TeamFoundation.DistributedTask.Task.Deployment.Internal"
   
 Write-Verbose "Importing VSTS Module $agentDistributedTaskInternalModulePath" 
 Import-Module $agentDistributedTaskInternalModulePath
@@ -94,8 +93,5 @@ if ($PSVersionTable.PSVersion.Major -ge $PowershellVersion5) {
     cmd.exe /c "`"$command`""
 }
 $ErrorActionPreference = 'Stop'
-
-
-
 
 Write-Host "Leaving script Publish-SqlDatabaseProjectToAzure.ps1"

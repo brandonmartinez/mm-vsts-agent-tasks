@@ -13,9 +13,8 @@ Write-Host "Entering script Build-AspNetCoreWebApp.ps1"
 Write-Verbose "ProjectName = $ProjectName"
 
 # Import the Task.Common and Task.Internal dll that has all the cmdlets we need for Build
-$agentWorkerModulesPath = "$($env:AGENT_HOMEDIRECTORY)\agent\worker\Modules"
-$agentDistributedTaskInternalModulePath = "$agentWorkerModulesPath\Microsoft.TeamFoundation.DistributedTask.Task.Internal\Microsoft.TeamFoundation.DistributedTask.Task.Internal.dll"
-$agentDistributedTaskCommonModulePath = "$agentWorkerModulesPath\Microsoft.TeamFoundation.DistributedTask.Task.Common\Microsoft.TeamFoundation.DistributedTask.Task.Common.dll"
+$agentDistributedTaskInternalModulePath = "Microsoft.TeamFoundation.DistributedTask.Task.Internal"
+$agentDistributedTaskCommonModulePath = "Microsoft.TeamFoundation.DistributedTask.Task.Common"
 
 Write-Verbose "Importing VSTS Module $agentDistributedTaskInternalModulePath" 
 Import-Module $agentDistributedTaskInternalModulePath
