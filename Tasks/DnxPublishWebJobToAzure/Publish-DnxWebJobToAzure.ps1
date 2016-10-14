@@ -32,7 +32,7 @@ Write-Verbose "AzureTargetWebApps = $AzureTargetWebApps"
 Write-Verbose "AzureTargetWebAppSlotName = $AzureTargetWebAppSlotName"
 Write-Verbose "AzureWebAppForceStop = $AzureWebAppForceStop"
 
-$AzureWebAppForceStopChecked = Convert-String $AzureWebAppForceStop Boolean
+$AzureWebAppForceStopChecked = [System.Convert]::ToBoolean($AzureWebAppForceStop)
 Write-Verbose "AzureWebAppForceStopChecked = $AzureWebAppForceStopChecked"
 
 $msdeployRegKey = "hklm:\SOFTWARE\Microsoft\IIS Extensions\MSDeploy"
