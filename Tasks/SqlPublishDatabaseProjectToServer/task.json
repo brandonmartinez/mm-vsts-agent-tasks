@@ -10,14 +10,14 @@
 	],
 	"author": "Brandon Martinez",
 	"version": {
-		"Major": 0,
-		"Minor": 3,
+		"Major": 1,
+		"Minor": 0,
 		"Patch": 0
 	},
 	"demands": [
 		
 	],
-	"minimumAgentVersion": "1.83.0",
+	"minimumAgentVersion": "2.00.0",
 	"inputs": [
 		{
 			"name": "DatabasePublishProfilePath",
@@ -74,6 +74,14 @@
 			"defaultValue": "300",
 			"required": true,
 			"helpMarkDown": "The timeout in seconds to use for SQL commands; default is 300 seconds (5 minutes)."
+		},
+		{
+			"name": "SqlPackage",
+			"type": "string",
+			"label": "Alternative SqlPackage.exe Location",
+			"defaultValue": "",
+			"required": false,
+			"helpMarkDown": "An alternative path of SqlPackage.exe to use instead of the task's default."
 		},
 		{
 			"name": "AdditionalArguments",

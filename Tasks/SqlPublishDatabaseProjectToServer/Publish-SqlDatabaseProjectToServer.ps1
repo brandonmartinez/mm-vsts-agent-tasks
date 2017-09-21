@@ -21,6 +21,9 @@ param
     
     [String] [Parameter(Mandatory = $true)]
     $SqlCommandTimeout,
+    
+    [String] 
+    $SqlPackage,
 
     [String]
     $AdditionalArguments
@@ -40,6 +43,11 @@ Write-Verbose "AdditionalArguments = $AdditionalArguments"
 # Santiize an empty AdditionalArguments value
 if([string]::IsNullOrWhiteSpace($AdditionalArguments)) {
     $AdditionalArguments = ""
+}
+
+# If location not specified, use default version
+if([string]::IsNullOrWhiteSpace($SqlPackage)) {
+    $SqlPackage = "c:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\130\SqlPackage.exe"
 }
 
 # Adding known arguments. For more information visit https://msdn.microsoft.com/en-us/hh550080(v=vs.103).aspx
@@ -64,23 +72,8 @@ $scriptArgument = Get-SqlPackageCommandArguments -dacpacFile $DatabaseDacpacPath
 
 Write-Verbose "Created SQLPackage.exe agruments"  -Verbose
 
-<#
-// Returns an older version of sqlpackage; working around this for now
-$sqlDeploymentScriptPath = Join-Path "$env:AGENT_HOMEDIRECTORY" "Agent\Worker\Modules\Microsoft.TeamFoundation.DistributedTask.Task.DevTestLabs\Scripts\Microsoft.TeamFoundation.DistributedTask.Task.Deployment.Sql.ps1"
-$SqlPackageCommand = "& `"$sqlDeploymentScriptPath`" $scriptArgument"
-
-Write-Verbose "Executing SQLPackage.exe"  -Verbose
-
-$ErrorActionPreference = 'Continue'
-
-Invoke-Expression -Command $SqlPackageCommand
-
-$ErrorActionPreference = 'Stop'
-#>
-
-$sqlPackage = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\SqlPackage.exe"
 $sqlPackageArguments = $scriptArgument.Trim('"', ' ')
-$command = "`"$sqlPackage`" $sqlPackageArguments"
+$command = "`"$SqlPackage`" $sqlPackageArguments"
 $command = $command.Replace("'", "`"")
 
 Write-Verbose "Executing SQLPackage.exe with command $command"
