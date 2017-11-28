@@ -14,7 +14,10 @@ param
     $AzureTargetWebAppSlotName,
     
     [String]
-    $AzureWebAppForceStop = "0"
+    $AzureWebAppForceStop = "0",
+
+    [String]
+    $SkipExtraFilesOnServer = "0"
 )
 
 Write-Host "Entering script Publish-AspNetCoreWebAppToAzure.ps1"
@@ -25,6 +28,9 @@ Write-Verbose "AzureWebAppForceStop = $AzureWebAppForceStop"
 
 $AzureWebAppForceStopChecked = $AzureWebAppForceStop -eq "1" -or $AzureWebAppForceStop -eq "true"
 Write-Verbose "AzureWebAppForceStopChecked = $AzureWebAppForceStopChecked"
+
+$SkipExtraFilesOnServerChecked = $SkipExtraFilesOnServer -eq "1" -or $SkipExtraFilesOnServer -eq "true"
+Write-Verbose "SkipExtraFilesOnServerChecked = $SkipExtraFilesOnServerChecked"
 
 $AzureTargetWebAppList = $AzureTargetWebApps.split("`r`n").split(",").split(";") | Where {-not [string]::IsNullOrWhiteSpace($_)}
 
@@ -77,7 +83,7 @@ $AzureTargetWebAppList | % {
             "UsePowerShell" = $true; `
             "MSDeployServiceUrl" = "$($msdeployurl):443"; `
             "DeployIisAppPath" = $msdeployIisAppPath; `
-            #"SkipExtraFilesOnServer" = $false;
+            "SkipExtraFilesOnServer" = $SkipExtraFilesOnServerChecked; `
             "MSDeployPublishMethod" = "WMSVC"; `
         }
 

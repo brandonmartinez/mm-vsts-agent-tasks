@@ -11,8 +11,8 @@
 	"author": "Brandon Martinez",
 	"version": {
 		"Major": 1,
-		"Minor": 0,
-		"Patch": 1
+		"Minor": 1,
+		"Patch": 2
 	},
     "demands": [
         "DotNetFramework"
@@ -58,6 +58,14 @@
             "defaultValue": false,
             "required": true,
             "helpMarkDown": "If true, stop the application during deployment. If false, restarts the instance before deployment instead of stopping completely."
+        },
+        {
+            "name": "SkipExtraFilesOnServer",
+            "type": "boolean",
+            "label": "Skip Extra Files on Server",
+            "defaultValue": true,
+            "required": true,
+            "helpMarkDown": "If true, extra files on the server are not removed. If false, extra files are deleted."
         }
 	],
 	"instanceNameFormat": "ASP.NET Core - Publish to Azure: $(AzureTargetWebApps)",

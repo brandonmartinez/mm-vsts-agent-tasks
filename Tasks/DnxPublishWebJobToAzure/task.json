@@ -1,7 +1,7 @@
 {
 	"id": "f04aeb2f-486e-4355-b12c-93c72a6a1c61",
 	"name": "DnxPublishWebJobToAzure",
-	"friendlyName": "DNX - Publish Web Job to Azure",
+	"friendlyName": "ASP.NET Core - Publish Web Job to Azure",
 	"description": "Publish a DNX console application as a web job in Azure.",
 	"helpMarkDown": "[More Information](https://github.com/brandonmartinez/mm-vsts-agent-tasks/)",
 	"category": "Deploy",
@@ -10,8 +10,8 @@
 	],
 	"author": "Brandon Martinez",
 	"version": {
-		"Major": 0,
-		"Minor": 5,
+		"Major": 1,
+		"Minor": 1,
 		"Patch": 0
 	},
 	"demands": [
@@ -78,6 +78,14 @@
             "defaultValue": false,
             "required": false,
             "helpMarkDown": "Force stop the web app before deploying the web job."
+        },
+        {
+            "name": "SkipExtraFilesOnServer",
+            "type": "boolean",
+            "label": "Skip Extra Files on Server",
+            "defaultValue": true,
+            "required": false,
+            "helpMarkDown": "If true, extra files on the server are not removed. If false, extra files are deleted."
         }
 	],
 	"instanceNameFormat": "DNX - Publish Web Job to Azure: $(AzureWebJobName)",

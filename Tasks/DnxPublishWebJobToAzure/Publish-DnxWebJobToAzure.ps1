@@ -20,7 +20,10 @@ param
     $AzureTargetWebAppSlotName,
     
     [String]
-    $AzureWebAppForceStop
+    $AzureWebAppForceStop = "0",
+    
+    [String]
+    $SkipExtraFilesOnServer = "0"
 )
 
 Write-Host "Entering script Publish-DnxWebJobToAzure.ps1"
@@ -35,14 +38,16 @@ Write-Verbose "AzureWebAppForceStop = $AzureWebAppForceStop"
 $AzureWebAppForceStopChecked = [System.Convert]::ToBoolean($AzureWebAppForceStop)
 Write-Verbose "AzureWebAppForceStopChecked = $AzureWebAppForceStopChecked"
 
+$SkipExtraFilesOnServerChecked = $SkipExtraFilesOnServer -eq "1" -or $SkipExtraFilesOnServer -eq "true"
+Write-Verbose "SkipExtraFilesOnServerChecked = $SkipExtraFilesOnServerChecked"
+
 $msdeployRegKey = "hklm:\SOFTWARE\Microsoft\IIS Extensions\MSDeploy"
-if(-not (Test-Path -Path $msdeployRegKey))
-{
+if (-not (Test-Path -Path $msdeployRegKey)) {
     throw "Cannot find msdeploy.exe location!" 
 }
 
 $msdeployPath = (Get-ChildItem -Path $msdeployRegKey | Select -Last 1).GetValue("InstallPath")
-if(-not (Test-Path -Path $msdeployPath)) {
+if (-not (Test-Path -Path $msdeployPath)) {
     throw "Cannot find msdeploy.exe at $msdeployPath!"
 }
 
@@ -57,18 +62,21 @@ $AzureTargetWebAppList | % {
     
     Write-Verbose "Azure Web App Targeted: $webappName"
     
-    if($AzureWebAppForceStopChecked) {
+    if ($AzureWebAppForceStopChecked) {
         Write-Verbose "Force Stop Requested. Stopping Azure Website $webappName to ensure no locks"
         if ([string]::IsNullOrWhiteSpace($AzureTargetWebAppSlotName)) {
             Stop-AzureWebsite -Name $webappName
-        } else {
+        }
+        else {
             Stop-AzureWebsite -Name $webappName -Slot $AzureTargetWebAppSlotName
         }
-    } else {
+    }
+    else {
         Write-Verbose "Restarting Azure Website $webappName to ensure no locks"
         if ([string]::IsNullOrWhiteSpace($AzureTargetWebAppSlotName)) {
             Restart-AzureWebsite -Name $webappName
-        } else {
+        }
+        else {
             Restart-AzureWebsite -Name $webappName -Slot $AzureTargetWebAppSlotName
         }
     }
@@ -78,14 +86,14 @@ $AzureTargetWebAppList | % {
         $webapp = if ([string]::IsNullOrWhiteSpace($AzureTargetWebAppSlotName)) {  Get-AzureWebsite -Name $webappName } else {  Get-AzureWebsite -Name $webappName -Slot $AzureTargetWebAppSlotName }
         
         # If we have an array, we most likely have additional slots on this website. Throw an exception and leave.
-        if($webapp -is [System.Object[]]) {
+        if ($webapp -is [System.Object[]]) {
             throw [System.Exception] "Multiple websites returned for $webappName; please specify a slot"
         }
         
         # Grab SCM url to use with MSDeploy; there should only be one
         $msdeployurl = $webapp.EnabledHostNames | Where-Object {$_ -like "*.scm.*"}
         
-        if($msdeployurl -is [System.Object[]]) {
+        if ($msdeployurl -is [System.Object[]]) {
             throw [System.Exception] "Multiple SCM urls returned for $webappName; consult Kudu/Azure portal to clarify."
         }
         
@@ -110,8 +118,9 @@ $AzureTargetWebAppList | % {
         $publishArgs += '-enablerule:AppOffline'
         $publishArgs += '-retryAttempts:2'
         $publishArgs += '-disablerule:BackupRule'
-        # TODO: add option for DoNotDeleteRule
-        # $publishArgs += '-enableRule:DoNotDeleteRule'
+        if ($SkipExtraFilesOnServerChecked) {
+            $publishArgs += '-enableRule:DoNotDeleteRule'
+        }
         
         $msdeployArguments = $publishArgs -join " "
         $msdeployArgumentsLog = $msdeployArguments.replace($msdeployPassword, "*********")
@@ -124,13 +133,13 @@ $AzureTargetWebAppList | % {
         $ErrorActionPreference = 'Continue'
         if ($PSVersionTable.PSVersion.Major -ge $PowershellVersion5) {
             cmd.exe /c "$command"
-        } else {
+        }
+        else {
             cmd.exe /c "`"$command`""
         }
         $ErrorActionPreference = 'Stop'
     }
-    catch
-    {
+    catch {
         $errorMessage = $_.Exception.Message
         Write-Error "An exception occurred during deployment of $webappName - $errorMessage"
         throw
@@ -139,7 +148,8 @@ $AzureTargetWebAppList | % {
         Write-Verbose "Force Stop Previously Requested. Starting Azure Website $webappName"
         if ([string]::IsNullOrWhiteSpace($AzureTargetWebAppSlotName)) {
             Start-AzureWebsite -Name $webappName
-        } else {
+        }
+        else {
             Start-AzureWebsite -Name $webappName -Slot $AzureTargetWebAppSlotName
         }
     }
